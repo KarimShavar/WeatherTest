@@ -7,6 +7,6 @@ namespace WeatherApp.Data
 {
     public interface IWeatherService
     {
-        Task<List<OpenWeatherResponse>> GetWeatherForAllCitiesAsync();
+        Task<IList<OpenWeatherResponse>> GetWeatherForAllCitiesAsync();
     }
 }

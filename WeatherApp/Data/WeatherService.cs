@@ -10,16 +10,18 @@ namespace WeatherApp.Data
     public class WeatherService : IWeatherService
     {
         private readonly WeatherCall _call;
+        public IList<OpenWeatherResponse> Weathers;
 
         public WeatherService(WeatherCall call)
         {
             _call = call;
         }
 
-        public async Task<List<OpenWeatherResponse>> GetWeatherForAllCitiesAsync()
+        public async Task<IList<OpenWeatherResponse>> GetWeatherForAllCitiesAsync()
         {
             var weathers = await _call.GetAll();
-            return _call.Weathers.list;
+            Weathers = _call.Weathers.list;
+            return Weathers;
         }
     }
 }

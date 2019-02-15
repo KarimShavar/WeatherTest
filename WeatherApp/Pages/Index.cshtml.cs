@@ -11,7 +11,7 @@ namespace WeatherApp.Pages
 {
     public class IndexModel : PageModel
     {
-        public List<OpenWeatherResponse> Weathers { get; set; }
+        public IList<OpenWeatherResponse> Weathers { get; set; }
         private readonly IWeatherService _weatherService;
 
         public IndexModel(IWeatherService weatherService)
@@ -19,9 +19,9 @@ namespace WeatherApp.Pages
             _weatherService = weatherService;
         }
 
-        public void OnGetAsync()
+        public async Task OnGetAsync()
         {
-            this.Weathers = _weatherService.GetWeatherForAllCitiesAsync().Result;
+            this.Weathers = await _weatherService.GetWeatherForAllCitiesAsync();
         }
     }
 }
