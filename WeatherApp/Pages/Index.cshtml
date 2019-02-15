@@ -1,0 +1,29 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h1>Weather Info</h1>
+<table class="table">
+    <thead>
+    <tr>
+    <th>City</th>
+    <th>Temp</th>
+    <th>Humidity</th>
+    <th>Pressure</th>
+    <th>Description</th>    
+    </thead>
+    <tbody>
+    @foreach (var weather in Model.Weathers)
+    {
+        <tr>
+            <td>@weather.name</td>
+            <td>@weather.main.temp</td>
+            <td>@weather.main.humidity</td>
+            <td>@weather.main.pressure</td>
+            <td>@weather.weather[0].description</td>
+        </tr>
+    }
+    </tbody>
+</table>
