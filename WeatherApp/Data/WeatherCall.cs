@@ -30,7 +30,7 @@ namespace WeatherApp.Data
                 {
                     client.BaseAddress = new Uri("http://api.openweathermap.org");
                     var response =await client.GetAsync(
-                        $"/data/2.5/box/city?bbox=13,48,23,54,10&appid={ApiStorage.ApiKey}&units=metric");
+                        $"/data/2.5/box/city?bbox=16,51,22,54,10&appid={ApiStorage.ApiKey}&units=metric");
                     response.EnsureSuccessStatusCode();
 
                     var stringResult = await response.Content.ReadAsStringAsync();

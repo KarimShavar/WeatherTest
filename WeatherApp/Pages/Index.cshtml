@@ -1,4 +1,7 @@
 ﻿@page
+@using ChartJSCore.Models
+@using Microsoft.CodeAnalysis
+@using Microsoft.EntityFrameworkCore.Storage.ValueConversion
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -29,3 +32,18 @@
     }
     </tbody>
 </table>
+
+<div>
+    <canvas id="myChart" width="400" height="400"></canvas>
+</div>
+@{
+    var chart = @Model.TempChart();
+}
+@section Scripts{ 
+    <script>
+        @Html.Raw(chart.CreateChartCode("myChart"));
+    </script>
+}
+
+
+

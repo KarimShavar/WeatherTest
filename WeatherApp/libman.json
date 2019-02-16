@@ -9,6 +9,10 @@
         "css/jquery.dataTables.min.css",
         "js/dataTables.uikit.min.js"
       ]
+    },
+    {
+      "library": "Chart.js@2.7.3",
+      "destination": "wwwroot/Chart.js/"
     }
   ]
 }

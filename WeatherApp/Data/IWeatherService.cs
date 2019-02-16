@@ -8,5 +8,6 @@ namespace WeatherApp.Data
     public interface IWeatherService
     {
         Task<IList<OpenWeatherResponse>> GetWeatherForAllCitiesAsync();
+        IDictionary<string, double> GetCityTemperatures();
     }
 }
