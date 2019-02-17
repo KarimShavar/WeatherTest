@@ -5,14 +5,7 @@ using System.Threading.Tasks;
 
 namespace WeatherApp.Models
 {
-    public class OpenWeatherResponseRectangle
-    {
-        public string cod { get; set; }
-        public double calctime { get; set; }
-        public double cnt { get; set; }
-        public List<OpenWeatherResponse> list { get; set; }
-    }
-    public class OpenWeatherResponse
+    public class OpenWeatherResponseDto
     {
         public Coord coord { get; set; }
         public List<Weather> weather { get; set; }
@@ -23,7 +16,7 @@ namespace WeatherApp.Models
         public Clouds clouds { get; set; }
         public double dt { get; set; }
         public Sys sys { get; set; }
-        public double id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public double cod { get; set; }
     }

@@ -16,8 +16,8 @@ namespace WeatherApp.Data
     [ApiController]
     public class WeatherCall : ControllerBase
     {
-        public OpenWeatherResponseRectangle Weathers { get; private set; } 
-        public OpenWeatherResponse SingleCityWeather { get; private set; }
+        public OpenWeatherResponseRectangleDto Weathers { get; private set; } 
+        public OpenWeatherResponseDto SingleCityWeather { get; private set; }
 
         // GET: api/Weather
         // Get 15 cities info
@@ -34,7 +34,7 @@ namespace WeatherApp.Data
                     response.EnsureSuccessStatusCode();
 
                     var stringResult = await response.Content.ReadAsStringAsync();
-                    Weathers = JsonConvert.DeserializeObject<OpenWeatherResponseRectangle>(stringResult);
+                    Weathers = JsonConvert.DeserializeObject<OpenWeatherResponseRectangleDto>(stringResult);
                     return Ok();
                 }
                 catch (HttpRequestException ex)
@@ -57,7 +57,7 @@ namespace WeatherApp.Data
                     response.EnsureSuccessStatusCode();
 
                     var stringResult = await response.Content.ReadAsStringAsync();
-                    SingleCityWeather = JsonConvert.DeserializeObject<OpenWeatherResponse>(stringResult);
+                    SingleCityWeather = JsonConvert.DeserializeObject<OpenWeatherResponseDto>(stringResult);
                     return Ok(stringResult);
                 }
                 catch (HttpRequestException ex)
