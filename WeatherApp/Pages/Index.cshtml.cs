@@ -17,7 +17,7 @@ namespace WeatherApp.Pages
         public double[] MedianGlobalTemperatures { get; set; }
         public IDictionary<string, double> CityTemperatures { get; set; }
 
-        public IList<OpenWeatherResponse> Weathers { get; set; }
+        public IList<WeatherReport> Weathers { get; set; }
         private readonly IWeatherService _weatherService;
 
         public IndexModel(IWeatherService weatherService)

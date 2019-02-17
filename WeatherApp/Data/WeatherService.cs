@@ -11,24 +11,51 @@ namespace WeatherApp.Data
     public class WeatherService : IWeatherService
     {
         private readonly WeatherCall _call;
-        private IList<OpenWeatherResponse> _weathers;
-        private IDictionary<string, double> _cityTemperatures;
+        private IList<OpenWeatherResponseDto> _weathers;
+
+        private readonly IList<WeatherReport> _weatherReports;
+        private readonly IDictionary<string, double> _cityTemperatures;
 
         public WeatherService(WeatherCall call)
         {
             _call = call;
+            _weatherReports = new List<WeatherReport>();
+            _cityTemperatures = new Dictionary<string, double>();
+
+        }
+        public async Task<IList<WeatherReport>> GetWeatherForAllCitiesAsync()
+        {
+            var apiCall = await _call.GetAll();
+            _weathers = _call.Weathers.list;
+
+            if (!_weathers.Any())
+            {
+                throw new Exception("Error retrieving data from API. List is empty.");
+            }
+
+            ConvertDtoIntoWeatherReport(_weathers);
+
+            return _weatherReports;
         }
 
-        public async Task<IList<OpenWeatherResponse>> GetWeatherForAllCitiesAsync()
+        private void ConvertDtoIntoWeatherReport(IList<OpenWeatherResponseDto> weatherResponseDto)
         {
-            var weathers = await _call.GetAll();
-            _weathers = _call.Weathers.list;
-            return _weathers;
+            foreach (var openWeatherResponseDto in _weathers)
+            {
+                _weatherReports.Add(new WeatherReport()
+                {
+                    Id = openWeatherResponseDto.id,
+                    City = openWeatherResponseDto.name,
+                    Temperature = openWeatherResponseDto.main.temp,
+                    Humidity = openWeatherResponseDto.main.humidity,
+                    Pressure = openWeatherResponseDto.main.pressure,
+                    Description = openWeatherResponseDto.weather[0].description
+                });
+            }
         }
 
         public IDictionary<string, double> GetCityTemperatures()
         {
-            _cityTemperatures = new Dictionary<string, double>();
             if (_weathers.Any())
             {
                 foreach (var response in _weathers)
