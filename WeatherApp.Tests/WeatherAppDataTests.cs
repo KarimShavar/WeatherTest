@@ -1,16 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.Web.CodeGeneration;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Moq;
 using Newtonsoft.Json;
+using WeatherApp.Data;
 using WeatherApp.Models;
+using WeatherApp.Pages;
 
 namespace WeatherApp.Tests
 {
     [TestClass]
     public class WeatherAppDataTests
     {
+        [TestMethod]
+        public void WeatherServiceReturnsWeatherReports()
+        {
+            //--Arrange
+            var mock = new Mock<IWeatherService>();
+            mock.Setup(o => o.GetWeatherForAllCitiesAsync())
+                .ReturnsAsync(new List<WeatherReport>()
+                {
+                    new WeatherReport()
+                    {
+                        Id = 1,
+                        City = "Worksop",
+                        Description = "Windy",
+                        Humidity = 84,
+                        Pressure = 1008,
+                        Temperature = 25
+                    },
+                    new WeatherReport()
+                    {
+                        Id = 2,
+                        City = "Doncaster",
+                        Description = "Fog",
+                        Humidity = 89,
+                        Pressure = 1010,
+                        Temperature = 16
+                    }
+                    
+                });
+            mock.Setup(p => p.GetCityTemperatures())
+                .Returns(new Dictionary<string, double>()
+                {
+                    {"Worksop", 25},
+                    {"Doncaster", 16}
+                });
+            
+            var main = new IndexModel(mock.Object);
+            //-- Act
+            var actual = main.OnGetAsync();
+            
+            //-- Assert
+            Assert.IsTrue(actual.IsCompletedSuccessfully);
+            
+            Assert.AreEqual("Worksop", main.Weathers[0].City);
+            Assert.AreEqual(1, main.Weathers[0].Id);
+            Assert.AreEqual("Fog", main.Weathers[1].Description);
+            
+            Assert.IsTrue(main.Weathers.Any());
+            Assert.IsTrue(main.CityTemperatures.Any());
+        }
+        
         [TestMethod]
         public void DataIsDeserializedIntoModelCorrectly()
         {
@@ -29,7 +84,7 @@ namespace WeatherApp.Tests
             //--Assert
             Assert.IsNotNull(actual);
             Assert.IsTrue(Math.Abs(-0.13D - actual.coord.lon) < 0.01);
-            Assert.IsTrue(300 == actual.id);
+            Assert.IsTrue(Math.Abs(2643743 - actual.id) < 0.01);
             Assert.IsTrue("London" == actual.name);
             Assert.IsTrue(Math.Abs(280.32D - actual.main.temp) < 0.01);
         }
